@@ -31,7 +31,7 @@ jobs:
           GITHUB_REPOSITORY="prakarsh-dt/devtron"
           GITHUB_EVENT_PATH="github.event"
           echo ${{ github.event.pull_request.body }}
-          PR_BODY=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")
+          PR_BODY=${{ github.event.pull_request.body }}
           ISSUE_REGEX="(Fixes|Resolves) ((#(\d+))|(https:\/\/github.com\/[^\/]+\/[^\/]+\/issues\/(\d+)))"
           if [[ "$PR_BODY" =~ $ISSUE_REGEX ]]; then
             ISSUE_NUMBER=${BASH_REMATCH[4]:-${BASH_REMATCH[6]}}
