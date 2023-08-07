@@ -28,6 +28,7 @@ jobs:
 
       - name: Validate Issue Reference
         run: |
+          echo $GITHUB_EVENT_PATH
           PR_BODY=${{ github.event.pull_request.body }}
           ISSUE_REGEX="(Fixes|Resolves) ((#(\d+))|(https:\/\/github.com\/[^\/]+\/[^\/]+\/issues\/(\d+)))"
           if [[ "$PR_BODY" =~ $ISSUE_REGEX ]]; then
