@@ -28,8 +28,8 @@ jobs:
 
       - name: Validate Issue Reference
         run: |
-          $GITHUB_REPOSITORY="prakarsh-dt/devtron"
-          $GITHUB_EVENT_PATH="github.event"
+          GITHUB_REPOSITORY="prakarsh-dt/devtron"
+          GITHUB_EVENT_PATH="github.event"
           echo ${{ github.event.pull_request.body }}
           PR_BODY=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")
           ISSUE_REGEX="(Fixes|Resolves) ((#(\d+))|(https:\/\/github.com\/[^\/]+\/[^\/]+\/issues\/(\d+)))"
