@@ -28,8 +28,8 @@ jobs:
 
       - name: Validate Issue Reference
         run: |
-          apt-get update
-          apt-get install jq
+          sudo apt-get update
+          sudo apt-get install jq
           PR_BODY=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")
           ISSUE_REGEX="(Fixes|Resolves) ((#(\d+))|(https:\/\/github.com\/[^\/]+\/[^\/]+\/issues\/(\d+)))"
           if [[ "$PR_BODY" =~ $ISSUE_REGEX ]]; then
