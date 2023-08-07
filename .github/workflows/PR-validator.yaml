@@ -34,7 +34,7 @@ jobs:
           echo "PR_BODY"
           echo $PR_BODY
           ISSUE_REGEX='(Fixes|Resolves) ((#(\d+))|(https:\/\/github.com\/[^\/]+\/[^\/]+\/issues\/(\d+)))'
-          if [[ "$PR_BODY" =~ $ISSUE_REGEX ]]; then
+          if $PR_BODY | grep -E "$ISSUE_REGEX" ; then
             ISSUE_NUMBER=${BASH_REMATCH[4]:-${BASH_REMATCH[6]}}
             echo "Issue #$ISSUE_NUMBER referenced in PR body"
             ISSUE_DATA=$(curl -s "https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}")
