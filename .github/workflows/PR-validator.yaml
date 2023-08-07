@@ -1,0 +1,47 @@
+name: Validate Issue Reference
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - edited
+      - reopened
+    # branches:    
+    #   - 'main'
+    #   - 'release-**'
+    # paths-ignore:
+    #   - 'docs/**'
+    #   - '.github/'
+    #   - 'CHANGELOG/'
+    #   - 'charts/'
+    #   - 'manifests/'
+    #   - 'sample-docker-templates/'
+
+jobs:
+  validate-issue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check for valid issue reference
+        uses: actions/checkout@v2
+
+      - name: Validate Issue Reference
+        run: |
+          GITHUB_REPOSITORY="prakarsh-dt/devtron"
+          PR_TITLE=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
+          ISSUE_REGEX="(Fixes|Resolves) ((#(\d+))|(https:\/\/github.com\/[^\/]+\/[^\/]+\/issues\/(\d+)))"
+          if [[ "$PR_TITLE" =~ $ISSUE_REGEX ]]; then
+            ISSUE_NUMBER=${BASH_REMATCH[4]:-${BASH_REMATCH[6]}}
+            echo "Issue #$ISSUE_NUMBER referenced in PR title"
+            ISSUE_DATA=$(curl -s "https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}")
+            if [[ $(echo "$ISSUE_DATA" | jq -r '.state') == "open" ]]; then
+              echo "Issue #$ISSUE_NUMBER is open"
+            else
+              echo "Issue #$ISSUE_NUMBER is not open"
+              exit 1
+            fi
+          else
+            echo "No valid issue reference found in PR title"
+            exit 1
+          fi
