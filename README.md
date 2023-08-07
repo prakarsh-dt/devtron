@@ -9,7 +9,7 @@
  
 <p align="center">
 <br>
-<a href="https://docs.devtron.ai/" rel="nofollow"><strong>Explore documentation »</strong></a>
+<a href="https://docs.devtron.ai/" rel="nofollow"><strong>Explore Documentation »</strong></a>
 <br>
 <a href="https://preview.devtron.ai/dashboard/" rel="nofollow"><strong>Try Devtron Demo »</strong></a>
 <br>
