@@ -33,7 +33,7 @@ jobs:
           PR_BODY=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")
           echo "PR_BODY"
           echo $PR_BODY
-          ISSUE_REGEX="(Fixes|Resolves) ((#(\d+))|(https:\/\/github.com\/[^\/]+\/[^\/]+\/issues\/(\d+)))"
+          ISSUE_REGEX='(Fixes|Resolves) ((#(\d+))|(https:\/\/github.com\/[^\/]+\/[^\/]+\/issues\/(\d+)))'
           if [[ "$PR_BODY" =~ $ISSUE_REGEX ]]; then
             ISSUE_NUMBER=${BASH_REMATCH[4]:-${BASH_REMATCH[6]}}
             echo "Issue #$ISSUE_NUMBER referenced in PR body"
