@@ -28,12 +28,11 @@ jobs:
 
       - name: Validate Issue Reference
         run: |
-          GITHUB_REPOSITORY="prakarsh-dt/devtron"
-          PR_TITLE=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")
+          PR_BODY=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")
           ISSUE_REGEX="(Fixes|Resolves) ((#(\d+))|(https:\/\/github.com\/[^\/]+\/[^\/]+\/issues\/(\d+)))"
-          if [[ "$PR_TITLE" =~ $ISSUE_REGEX ]]; then
+          if [[ "$PR_BODY" =~ $ISSUE_REGEX ]]; then
             ISSUE_NUMBER=${BASH_REMATCH[4]:-${BASH_REMATCH[6]}}
-            echo "Issue #$ISSUE_NUMBER referenced in PR title"
+            echo "Issue #$ISSUE_NUMBER referenced in PR body"
             ISSUE_DATA=$(curl -s "https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}")
             if [[ $(echo "$ISSUE_DATA" | jq -r '.state') == "open" ]]; then
               echo "Issue #$ISSUE_NUMBER is open"
@@ -42,6 +41,6 @@ jobs:
               exit 1
             fi
           else
-            echo "No valid issue reference found in PR title"
+            echo "No valid issue reference found in PR body"
             exit 1
           fi
