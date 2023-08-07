@@ -29,7 +29,7 @@ jobs:
       - name: Validate Issue Reference
         run: |
           GITHUB_REPOSITORY="prakarsh-dt/devtron"
-          PR_TITLE=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
+          PR_TITLE=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")
           ISSUE_REGEX="(Fixes|Resolves) ((#(\d+))|(https:\/\/github.com\/[^\/]+\/[^\/]+\/issues\/(\d+)))"
           if [[ "$PR_TITLE" =~ $ISSUE_REGEX ]]; then
             ISSUE_NUMBER=${BASH_REMATCH[4]:-${BASH_REMATCH[6]}}
