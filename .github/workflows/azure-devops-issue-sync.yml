@@ -4,16 +4,31 @@ on:
   issues:
     types:
       [opened, edited, deleted, closed, reopened]
-
 jobs:
-  create_issues:
+  sync:
+    name: Sync Items to Jira
     runs-on: ubuntu-latest
     steps:
-      - if: contains(github.event.issue.labels.*.name, 'pager-duty')
-        name: custom issues
+      - name: Jira-Sync
+        uses: mheap/github-action-issue-to-jira@v1
         env:
-          DISCORD_WEBHOOK: ${{ secrets.PAGERDUTY_DISCORD_WEBHOOK}}
-          
-        uses: devtron-labs/action-discord@master
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: " [ **${{ github.event.issue.title}}** ](${{github.event.issue.html_url}})"
+          jiraHost: ${{ secrets.JIRA_HOST }}
+          jiraUsername: ${{ secrets.JIRA_USERNAME }}
+          jiraPassword: ${{ secrets.JIRA_PASSWORD }} # See https://id.atlassian.com/manage/api-tokens
+          project: SCRUM
+          assignee: default_assignee
+
+# jobs:
+#   create_issues:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - if: contains(github.event.issue.labels.*.name, 'pager-duty')
+#         name: custom issues
+#         env:
+#           DISCORD_WEBHOOK: ${{ secrets.PAGERDUTY_DISCORD_WEBHOOK}}
+          
+#         uses: devtron-labs/action-discord@master
+#         with:
+#           args: " [ **${{ github.event.issue.title}}** ](${{github.event.issue.html_url}})"
